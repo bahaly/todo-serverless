@@ -9,12 +9,9 @@ plugins:
   - serverless-aws-documentation
   - serverless-reqvalidator-plugin
 
-custom:
-  webpack:
-    webpackConfig: ./webpack.config.js
-    includeModules: true
-  
+custom:  
   documentation:
+    
     api:
       info:
         version: v1.0.0
@@ -28,12 +25,15 @@ custom:
         contentType: application/json
         schema: ${file(models/update-todo-request.json)}
 
+
+
 provider:
   name: aws
   runtime: nodejs12.x
   profile: aba
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
+  AUTH_0_SECRET: 779CqBKTWETGjPRUuPOU7JSYUleGdN8ZB7IBjEF4eiEBjz1bcuzV4Iw6hKpSV8mm
 
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
@@ -42,7 +42,7 @@ provider:
     TODO_TABLE: Todos-${self:provider.stage}
     IMAGES_BUCKET: todos-serverless-${self:provider.stage}
     USER_ID_INDEX: userId
-    SIGNED_URL_EXPIRATION: 300
+    SIGNED_URL_EXPIRATION: 3300
   
   tracing:
     lambda: true
@@ -236,7 +236,7 @@ resources:
       Properties:
         ResponseParameters:
           gatewayresponse.header.Access-Control-Allow-Origin: "'*''"
-          gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
           gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
         ResponseType: DEFAULT_4XX
         RestApiId:

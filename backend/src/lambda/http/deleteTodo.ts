@@ -18,6 +18,10 @@ export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGat
     logger.error('Invalid delete without Todo id')
     return {
       statusCode: 400,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true
+      },
       body: JSON.stringify({
         error: 'invalid parameters'
       })

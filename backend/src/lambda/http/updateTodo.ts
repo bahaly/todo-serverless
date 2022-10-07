@@ -26,6 +26,10 @@ export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGat
   if (item.Count == 0) {
     return {
       statusCode: 404,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true
+      },
       body: JSON.stringify({
         error: 'No TODO with the provided id is found'
       })
@@ -35,6 +39,10 @@ export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGat
   if (item.Items[0].userId !== userId) {
     return {
       statusCode: 403,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true
+      },
       body: JSON.stringify({
         error: 'You can not perform this action, this TODO does not belong to your account!'
       })
@@ -45,6 +53,10 @@ export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGat
   await new TodosAccess().updateTodo(updatedTodo, todoId)
   return {
     statusCode: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true
+    },
     body: JSON.stringify({
       message: 'The request has succeeded.'
     })

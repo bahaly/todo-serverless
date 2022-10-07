@@ -10,7 +10,7 @@ export class S3Helper {
             params: { Bucket: process.env.IMAGES_BUCKET }
         }),
         private readonly signedUrlExpireSeconds = parseInt(process.env.SIGNED_URL_EXPIRATION)
-    ) { }
+    ) { console.log(this.XAWS) }
         getPresignedUrl(todoId: string): string {
         return this.s3.getSignedUrl('putObject', {
             Bucket: process.env.IMAGES_BUCKET,

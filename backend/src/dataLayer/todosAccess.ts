@@ -3,15 +3,18 @@ import { CreateTodoRequest } from "../requests/CreateTodoRequest";
 import { UpdateTodoRequest } from "../requests/UpdateTodoRequest";
 const uuid = require('uuid/v4')
 import * as AWS from 'aws-sdk'
-import * as AWSXRay from 'aws-xray-sdk'
+import { DocumentClient } from 'aws-sdk/clients/dynamodb'
+
+
+const AWSXRay = require('aws-xray-sdk')
+const XAWS = AWSXRay.captureAWS(AWS)
 
 export class TodosAccess {
     constructor(
-        private readonly XAWS = AWSXRay.captureAWS(AWS),
-        private readonly docClient: AWS.DynamoDB.DocumentClient = new XAWS.DynamoDB.DocumentClient(),
+        private readonly docClient: DocumentClient = new XAWS.DynamoDB.DocumentClient(),
         private readonly todosTable = process.env.TODO_TABLE,
         private readonly userIdIndex = process.env.USER_ID_INDEX
-    ) { }
+    ) {}
 
     async getUserTodos(userId: string): Promise<TodoItem[]> {
         const result = await this.docClient.query({
