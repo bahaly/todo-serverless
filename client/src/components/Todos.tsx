@@ -45,18 +45,26 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
   }
 
   onTodoCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
-    try {
-      const dueDate = this.calculateDueDate()
-      const newTodo = await createTodo(this.props.auth.getIdToken(), {
-        name: this.state.newTodoName,
-        dueDate
-      })
-      this.setState({
-        todos: [...this.state.todos, newTodo],
-        newTodoName: ''
-      })
-    } catch {
-      alert('Todo creation failed')
+    if(this.state.newTodoName.length > 2){
+
+      try {
+        const dueDate = this.calculateDueDate()
+          
+        
+        const newTodo = await createTodo(this.props.auth.getIdToken(), {
+          name: this.state.newTodoName,
+          dueDate
+        })
+        this.setState({
+          todos: [...this.state.todos, newTodo],
+          newTodoName: ''
+        })
+      } catch {
+        alert('Todo creation failed')
+      }
+    }
+    else{
+      alert('Todo must have less 2 caractères')
     }
   }
 
@@ -128,6 +136,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
             fluid
             actionPosition="left"
             placeholder="To change the world..."
+            minLength={3}
             onChange={this.handleNameChange}
           />
         </Grid.Column>
